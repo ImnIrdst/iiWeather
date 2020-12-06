@@ -3,12 +3,13 @@
     package="com.imn.iiweather">
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.IIWeather">
+        android:theme="@style/Theme.IIWeather"
+        android:name=".IIWeatherApp">
         <activity
             android:name="com.imn.iiweather.ui.MainActivity"
             android:label="@string/app_name"
