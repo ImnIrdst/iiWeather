@@ -1,9 +1,10 @@
-package com.imn.iiweather
+package com.imn.iiweather.ui.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.imn.iiweather.R
 import com.imn.iiweather.databinding.FragmentMainBinding
 
 /**

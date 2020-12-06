@@ -1,8 +1,9 @@
-package com.imn.iiweather
+package com.imn.iiweather.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.imn.iiweather.R
 
 class MainActivity : AppCompatActivity() {
 

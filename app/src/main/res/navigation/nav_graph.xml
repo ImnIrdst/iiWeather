@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.imn.iiweather.MainFragment"
+        android:name="com.imn.iiweather.ui.main.MainFragment"
         android:label="@string/main_fragment_label"
         tools:layout="@layout/fragment_main">
 
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/LeakFragment"
-        android:name="com.imn.iiweather.LeakTestFragment"
+        android:name="com.imn.iiweather.ui.debug.LeakTestFragment"
         android:label="@string/leak_fragment_label"
         tools:layout="@layout/fragment_leak">
 
