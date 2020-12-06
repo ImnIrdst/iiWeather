@@ -12,4 +12,6 @@
 
     <string name="latitude_">Latitude: %1$.4f</string>
     <string name="longitude_">Longitude: %1$.4f</string>
+    <string name="ok">OK</string>
+    <string name="location_permission_required">Location Permission Required</string>
 </resources>
