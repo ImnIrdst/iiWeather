@@ -18,11 +18,11 @@ class MainFragmentTest {
     fun userLocationIsShown() {
         launchFragmentInContainer<MainFragment>(Bundle(), R.style.Theme_IIWeather_NoActionBar)
 
-        onView(withId(R.id.lat_text_view)).check(matches(isDisplayed()))
-        onView(withId(R.id.long_text_view)).check(matches(isDisplayed()))
-        
-        onView(withId(R.id.lat_text_view)).check(matches(withText("37.3806")))
-        onView(withId(R.id.long_text_view)).check(matches(withText("-122.0593")))
+        onView(withId(R.id.latitude_text_view)).check(matches(isDisplayed()))
+        onView(withId(R.id.longitude_text_view)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.latitude_text_view)).check(matches(withText("Latitude: 37.3806")))
+        onView(withId(R.id.longitude_text_view)).check(matches(withText("Longitude: -122.0593")))
 
         Thread.sleep(2000)
     }

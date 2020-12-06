@@ -9,4 +9,7 @@
 
     <string name="hello_main_fragment">Hello main fragment</string>
     <string name="hello_leak_fragment">Hello leak fragment. Arg: %1$s</string>
+
+    <string name="latitude_">Latitude: %1$.4f</string>
+    <string name="longitude_">Longitude: %1$.4f</string>
 </resources>
