@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">iiWeather</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="main_fragment_label">main Fragment</string>
+    <string name="leak_fragment_label">Leak Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_main_fragment">Hello main fragment</string>
+    <string name="hello_leak_fragment">Hello leak fragment. Arg: %1$s</string>
+</resources>
