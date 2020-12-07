@@ -9,7 +9,7 @@ class WeatherTest {
 
     @Test
     fun testFromJson() {
-        val actual = Weather.fromJson(weatherJson)
+        val actual = WeatherModel.fromJson(weatherJson)
 
         assertThat(actual).isEqualTo(weather)
     }

@@ -6,7 +6,7 @@ import com.imn.iiweather.utils.getLongOrNull
 import com.imn.iiweather.utils.getStringOrNull
 import org.json.JSONObject
 
-data class Weather(
+data class WeatherModel(
     val time: Long?,
     val summary: String?,
     val temperature: Double?,
@@ -23,10 +23,10 @@ data class Weather(
         private const val PRESSURE = "pressure"
         private const val WIND_SPEED = "windSpeed"
 
-        fun fromJson(json: String): Weather? {
+        fun fromJson(json: String): WeatherModel? {
             JSONObject(json).let { root ->
                 root.getJsonObjectOrNull(CURRENTLY)?.let { cur ->
-                    return Weather(
+                    return WeatherModel(
                         cur.getLongOrNull(TIME),
                         cur.getStringOrNull(SUMMARY),
                         cur.getDoubleOrNull(TEMPERATURE),

@@ -4,10 +4,13 @@ import com.google.common.truth.Truth.assertThat
 import com.imn.iiweather.IITestCase
 import com.imn.iiweather.domain.repository.WeatherRepository
 import com.imn.iiweather.weather
+import com.imn.iiweather.weatherEntity
 import io.mockk.coVerify
 import io.mockk.confirmVerified
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
@@ -27,6 +30,8 @@ class DefaultWeatherRepositoryTest : IITestCase() {
 
     @Test
     fun `test when current weather exists in db`() = td.runBlockingTest {
+        every { local.getCurrentWeather() } returns listOf(weatherEntity).asFlow()
+
         repository.getCurrentWeather()
             .toList()
             .also {
@@ -34,7 +39,7 @@ class DefaultWeatherRepositoryTest : IITestCase() {
             }
 
         coVerify {
-            local.getCurrentWeather(System.currentTimeMillis())
+            local.getCurrentWeather()
         }
     }
 }
