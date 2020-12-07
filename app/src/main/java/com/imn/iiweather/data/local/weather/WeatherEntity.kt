@@ -1,8 +1,12 @@
 package com.imn.iiweather.data.local.weather
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.imn.iiweather.domain.model.location.WeatherModel
 
+@Entity(tableName = "weather")
 data class WeatherEntity(
+    @PrimaryKey
     var id: Long? = null,
     val time: Long?,
     val summary: String?,

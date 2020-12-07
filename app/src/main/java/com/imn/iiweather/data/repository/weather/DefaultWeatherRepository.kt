@@ -17,9 +17,9 @@ class DefaultWeatherRepository(
             emit(localEntity)
 
             if (localEntity == null || localEntity.isExpired()) {
-                remote.getCurrentWeather().toWeatherEntity()?.let {
-                    local.insertCurrentWeather(it)
-                }
+                remote.getCurrentWeather().toWeatherEntity()
+                    ?.let { if (localEntity != null) it.copy(id = localEntity.id) else it }
+                    ?.let { local.insertCurrentWeather(it) }
             }
         }
         .filterNotNull()

@@ -1,4 +1,4 @@
-package com.imn.iiweather.data.local
+package com.imn.iiweather.data.local.location
 
 import android.annotation.SuppressLint
 import android.content.Context

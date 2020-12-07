@@ -42,8 +42,6 @@ class DefaultWeatherRepositoryTest : IITestCase() {
 
     @Test
     fun `test when current weather is expired`() = td.runBlockingTest {
-        val expiredWeatherEntity = weatherEntity
-            .copy(creationTime = System.currentTimeMillis() - 100_000)
 
         val localResultStateFlow = MutableStateFlow(expiredWeatherEntity)
         every { local.getCurrentWeather() } returns localResultStateFlow
@@ -70,9 +68,6 @@ class DefaultWeatherRepositoryTest : IITestCase() {
 
     @Test
     fun `test when remote throws exception`() = td.runBlockingTest {
-        val expiredWeatherEntity = weatherEntity
-            .copy(creationTime = System.currentTimeMillis() - 100_000)
-
         every { local.getCurrentWeather() } returns listOf(expiredWeatherEntity).asFlow()
         coEvery { remote.getCurrentWeather() } throws unknownHostException
 

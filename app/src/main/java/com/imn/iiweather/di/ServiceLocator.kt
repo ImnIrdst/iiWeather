@@ -3,8 +3,9 @@ package com.imn.iiweather.di
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
-import com.imn.iiweather.data.local.FusedLocationLiveData
-import com.imn.iiweather.data.local.weather.WeatherEntity
+import androidx.room.Room
+import com.imn.iiweather.data.local.AppDatabase
+import com.imn.iiweather.data.local.location.FusedLocationLiveData
 import com.imn.iiweather.data.remote.weather.WeatherResponse
 import com.imn.iiweather.data.repository.location.DefaultLocationRepository
 import com.imn.iiweather.data.repository.weather.DefaultWeatherRepository
@@ -15,7 +16,6 @@ import com.imn.iiweather.domain.repository.LocationRepository
 import com.imn.iiweather.domain.repository.WeatherRepository
 import com.imn.iiweather.domain.utils.State
 import com.imn.iiweather.ui.main.MainViewModelFactory
-import kotlinx.coroutines.flow.Flow
 
 object ServiceLocator {
 
@@ -78,7 +78,7 @@ object ServiceLocator {
 
     private fun provideWeatherRemoteDataSource(): WeatherRemoteDataSource {
         synchronized(lock) {
-            return object : WeatherRemoteDataSource {
+            return weatherRemoteDataSource ?: object : WeatherRemoteDataSource {
                 override suspend fun getCurrentWeather(): WeatherResponse {
                     TODO("Not yet implemented")
                 }
@@ -86,17 +86,30 @@ object ServiceLocator {
         }
     }
 
+    @Volatile
+    var weatherLocalDataSource: WeatherLocalDataSource? = null
+        @VisibleForTesting set
+
     private fun provideWeatherLocalDataSource(appContext: Context): WeatherLocalDataSource {
         synchronized(lock) {
-            return object : WeatherLocalDataSource {
-                override fun getCurrentWeather(): Flow<WeatherEntity?> {
-                    TODO("Not yet implemented")
-                }
+            return weatherLocalDataSource ?: provideAppDataBase(appContext).weatherDao()
+        }
+    }
 
-                override suspend fun insertCurrentWeather(weatherEntity: WeatherEntity) {
-                    TODO("Not yet implemented")
+    @Volatile
+    var database: AppDatabase? = null
+        @VisibleForTesting set
+
+    private fun provideAppDataBase(appContext: Context): AppDatabase {
+        if (database == null) {
+            synchronized(lock) {
+                if (database === null) {
+                    database = Room.databaseBuilder(
+                        appContext, AppDatabase::class.java, "iiweather-db"
+                    ).build()
                 }
             }
         }
+        return database!!
     }
 }

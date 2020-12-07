@@ -33,6 +33,9 @@ val weatherEntity = WeatherEntity(
     creationTime = System.currentTimeMillis()
 )
 
+val expiredWeatherEntity = weatherEntity
+    .copy(creationTime = System.currentTimeMillis() - 100_000)
+
 val weatherResponse = WeatherResponse(weatherJson)
 
 val unknownHostException = UnknownHostException()
