@@ -85,9 +85,7 @@ class MainFragment : Fragment() {
         snackBar?.dismiss()
 
         timeTextView.setOnClickListener {
-            findNavController().navigate(
-                R.id.leakTestFragment
-            )
+            findNavController().navigate(R.id.leakTestFragment)
         }
 
         timeTextView.setTextOrGone(

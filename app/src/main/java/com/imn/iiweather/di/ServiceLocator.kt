@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.imn.iiweather.data.local.AppDatabase
 import com.imn.iiweather.data.local.location.FusedLocationLiveData
-import com.imn.iiweather.data.remote.weather.FakeWeatherRemoteDataSource
+import com.imn.iiweather.data.remote.weather.DefaultWeatherRemoteDataSource
 import com.imn.iiweather.data.repository.location.DefaultLocationRepository
 import com.imn.iiweather.data.repository.weather.DefaultWeatherRepository
 import com.imn.iiweather.data.repository.weather.WeatherLocalDataSource
@@ -16,6 +16,9 @@ import com.imn.iiweather.domain.repository.LocationRepository
 import com.imn.iiweather.domain.repository.WeatherRepository
 import com.imn.iiweather.domain.utils.State
 import com.imn.iiweather.ui.main.MainViewModelFactory
+import com.imn.iiweather.utils.BuildUtils
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 
 object ServiceLocator {
 
@@ -76,26 +79,29 @@ object ServiceLocator {
     var weatherRemoteDataSource: WeatherRemoteDataSource? = null
         @VisibleForTesting set
 
-//    private fun provideWeatherRemoteDataSource(): WeatherRemoteDataSource {
-//        synchronized(lock) {
-//            return weatherRemoteDataSource ?: DefaultWeatherRemoteDataSource(
-//                OkHttpClient.Builder()
-//                    .apply {
-//                        if (BuildUtils.isDebug) {
-//                            addInterceptor(
-//                                HttpLoggingInterceptor().apply {
-//                                    level = HttpLoggingInterceptor.Level.BODY
-//                                }
-//                            )
-//                        }
-//                    }
-//                    .build()
-//            )
-//        }
-//    }
+    var baseUrl = "https://api.darksky.net/forecast/"
 
-    private fun provideWeatherRemoteDataSource() =
-        weatherRemoteDataSource ?: FakeWeatherRemoteDataSource()
+    fun provideWeatherRemoteDataSource(): WeatherRemoteDataSource {
+        synchronized(lock) {
+            return weatherRemoteDataSource ?: DefaultWeatherRemoteDataSource(
+                baseUrl,
+                OkHttpClient.Builder()
+                    .apply {
+                        if (BuildUtils.isDebug) {
+                            addInterceptor(
+                                HttpLoggingInterceptor().apply {
+                                    level = HttpLoggingInterceptor.Level.BODY
+                                }
+                            )
+                        }
+                    }
+                    .build()
+            )
+        }
+    }
+//
+//    private fun provideWeatherRemoteDataSource() =
+//        weatherRemoteDataSource ?: FakeWeatherRemoteDataSource()
 
     @Volatile
     var weatherLocalDataSource: WeatherLocalDataSource? = null

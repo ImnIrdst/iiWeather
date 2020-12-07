@@ -7,7 +7,7 @@ import com.imn.iiweather.utils.getLongOrNull
 import com.imn.iiweather.utils.getStringOrNull
 import org.json.JSONObject
 
-class WeatherResponse(
+data class WeatherResponse(
     private val json: String,
 ) {
 

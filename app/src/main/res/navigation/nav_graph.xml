@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_main">
 
         <action
-            android:id="@+id/action_mainFragment_to_LeakFragment"
+            android:id="@+id/action_mainFragment_to_LeakTestFragment"
             app:destination="@id/leakTestFragment" />
     </fragment>
     <fragment

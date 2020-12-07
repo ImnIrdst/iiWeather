@@ -12,6 +12,7 @@ import okhttp3.Request
 import kotlin.coroutines.resumeWithException
 
 class DefaultWeatherRemoteDataSource(
+    private val baseUrl: String,
     private val okHttpClient: OkHttpClient,
 ) : WeatherRemoteDataSource {
 
@@ -20,7 +21,7 @@ class DefaultWeatherRemoteDataSource(
         withContext(Dispatchers.IO) {
             suspendCancellableCoroutine { continuation ->
                 val request = Request.Builder()
-                    .url(BASE_URL + BuildConfig.API_KEY + "/${locationModel.latitude},${locationModel.longitude}")
+                    .url(baseUrl + BuildConfig.API_KEY + "/${locationModel.latitude},${locationModel.longitude}")
                     .build()
 
                 val call = okHttpClient.newCall(request)
