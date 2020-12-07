@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.imn.iiweather.data.local.AppDatabase
 import com.imn.iiweather.data.local.location.FusedLocationLiveData
-import com.imn.iiweather.data.remote.weather.WeatherResponse
+import com.imn.iiweather.data.remote.weather.FakeWeatherRemoteDataSource
 import com.imn.iiweather.data.repository.location.DefaultLocationRepository
 import com.imn.iiweather.data.repository.weather.DefaultWeatherRepository
 import com.imn.iiweather.data.repository.weather.WeatherLocalDataSource
@@ -76,15 +76,25 @@ object ServiceLocator {
     var weatherRemoteDataSource: WeatherRemoteDataSource? = null
         @VisibleForTesting set
 
-    private fun provideWeatherRemoteDataSource(): WeatherRemoteDataSource {
-        synchronized(lock) {
-            return weatherRemoteDataSource ?: object : WeatherRemoteDataSource {
-                override suspend fun getCurrentWeather(): WeatherResponse {
-                    TODO("Not yet implemented")
-                }
-            }
-        }
-    }
+//    private fun provideWeatherRemoteDataSource(): WeatherRemoteDataSource {
+//        synchronized(lock) {
+//            return weatherRemoteDataSource ?: DefaultWeatherRemoteDataSource(
+//                OkHttpClient.Builder()
+//                    .apply {
+//                        if (BuildConfig.DEBUG) {
+//                            addInterceptor(
+//                                HttpLoggingInterceptor().apply {
+//                                    level = HttpLoggingInterceptor.Level.BODY
+//                                }
+//                            )
+//                        }
+//                    }
+//                    .build()
+//            )
+//        }
+//    }
+
+    private fun provideWeatherRemoteDataSource() = FakeWeatherRemoteDataSource()
 
     @Volatile
     var weatherLocalDataSource: WeatherLocalDataSource? = null

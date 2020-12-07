@@ -4,6 +4,9 @@ plugins {
     id 'kotlin-kapt'
 }
 
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
 android {
     compileSdkVersion 30
     buildToolsVersion "29.0.3"
@@ -19,7 +22,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField "String", "API_KEY", localProperties['apikey']
+        }
         release {
+            buildConfigField "String", "API_KEY", localProperties['apikey']
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -73,15 +80,19 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
 
-    def coroutines_version = "1.3.9"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
-
     implementation 'com.google.android.gms:play-services-location:17.1.0'
 
+    def coroutines_version = "1.3.9"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    
     def room_version = "2.3.0-alpha03"
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
+
+    def okhttp_version = "4.9.0"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
     debugImplementation "androidx.fragment:fragment-testing:1.3.0-beta02"
 
