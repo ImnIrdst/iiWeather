@@ -10,6 +10,9 @@ import com.imn.iiweather.di.ServiceLocator
 import com.imn.iiweather.domain.model.location.WeatherModel
 import com.imn.iiweather.domain.repository.WeatherRepository
 import com.imn.iiweather.domain.utils.State
+import com.imn.iiweather.utils.FakeDataBase
+import com.imn.iiweather.utils.FakeWeatherRemoteDataSource
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runBlockingTest
@@ -21,6 +24,7 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 @RunWith(AndroidJUnit4::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class DefaultWeatherRepositoryInstrumentationTest : IIAndroidTestCase() {
     private lateinit var repository: WeatherRepository
     private lateinit var fakeDatabase: AppDatabase

@@ -9,13 +9,13 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.imn.iiweather.R
-import com.imn.iiweather.data.repository.weather.FakeWeatherRemoteDataSource
 import com.imn.iiweather.di.ServiceLocator
 import com.imn.iiweather.domain.utils.humanReadable
 import com.imn.iiweather.locationError
 import com.imn.iiweather.locationModel
-import com.imn.iiweather.ui.common.FakeLocationLiveData
 import com.imn.iiweather.utils.EspressoIdlingResource
+import com.imn.iiweather.utils.FakeLocationLiveData
+import com.imn.iiweather.utils.FakeWeatherRemoteDataSource
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

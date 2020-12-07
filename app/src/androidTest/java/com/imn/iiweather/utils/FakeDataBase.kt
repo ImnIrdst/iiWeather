@@ -1,4 +1,4 @@
-package com.imn.iiweather.data.repository.weather
+package com.imn.iiweather.utils
 
 import android.content.Context
 import androidx.room.Room
