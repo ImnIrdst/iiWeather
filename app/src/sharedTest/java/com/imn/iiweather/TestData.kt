@@ -5,6 +5,7 @@ import com.imn.iiweather.data.remote.weather.WeatherResponse
 import com.imn.iiweather.domain.model.location.LocationModel
 import com.imn.iiweather.domain.model.location.WeatherModel
 import com.imn.iiweather.domain.utils.IIError
+import java.net.UnknownHostException
 
 val locationModel = LocationModel(
     longitude = -122.0593,
@@ -33,3 +34,6 @@ val weatherEntity = WeatherEntity(
 )
 
 val weatherResponse = WeatherResponse(weatherJson)
+
+val unknownHostException = UnknownHostException()
+val iiNetworkError = IIError.Network(unknownHostException)

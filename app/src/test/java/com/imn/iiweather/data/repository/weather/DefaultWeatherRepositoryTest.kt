@@ -1,16 +1,12 @@
 package com.imn.iiweather.data.repository.weather
 
 import com.google.common.truth.Truth.assertThat
-import com.imn.iiweather.IITestCase
+import com.imn.iiweather.*
 import com.imn.iiweather.domain.repository.WeatherRepository
-import com.imn.iiweather.weather
-import com.imn.iiweather.weatherEntity
-import com.imn.iiweather.weatherResponse
+import com.imn.iiweather.domain.utils.IIError
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
@@ -69,6 +65,26 @@ class DefaultWeatherRepositoryTest : IITestCase() {
             local.getCurrentWeather()
             remote.getCurrentWeather()
             local.insertCurrentWeather(weatherEntity)
+        }
+    }
+
+    @Test
+    fun `test when remote throws exception`() = td.runBlockingTest {
+        val expiredWeatherEntity = weatherEntity
+            .copy(creationTime = System.currentTimeMillis() - 100_000)
+
+        every { local.getCurrentWeather() } returns listOf(expiredWeatherEntity).asFlow()
+        coEvery { remote.getCurrentWeather() } throws unknownHostException
+
+        testScope.launch {
+            repository.getCurrentWeather()
+                .catch { assertThat(it).isInstanceOf(IIError.Network::class.java) }
+                .collect()
+        }
+
+        coVerify {
+            local.getCurrentWeather()
+            remote.getCurrentWeather()
         }
     }
 }
