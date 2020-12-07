@@ -6,7 +6,7 @@ import com.imn.iiweather.IIWeatherApp
 
 class LocationViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val locationLiveData = (application as IIWeatherApp).locationLiveData
+    private val locationRepository = (application as IIWeatherApp).locationRepository
 
-    fun getLocationData() = locationLiveData
+    fun getLocationData() = locationRepository.getLocationLiveData()
 }

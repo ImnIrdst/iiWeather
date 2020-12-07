@@ -1,4 +1,4 @@
-package com.imn.iiweather.ui.common.location
+package com.imn.iiweather.data.local
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,7 +12,7 @@ import com.imn.iiweather.domain.model.location.LocationModel
 import com.imn.iiweather.domain.utils.IIError
 import com.imn.iiweather.domain.utils.State
 
-class LocationLiveData(context: Context) : LiveData<State<LocationModel>>() {
+class FusedLocationLiveData(context: Context) : LiveData<State<LocationModel>>() {
 
     private var fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
