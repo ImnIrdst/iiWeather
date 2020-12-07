@@ -2,10 +2,10 @@ package com.imn.iiweather
 
 import android.app.Application
 import com.imn.iiweather.di.ServiceLocator
-import com.imn.iiweather.domain.repository.LocationRepository
+import com.imn.iiweather.ui.main.MainViewModelFactory
 
 class IIWeatherApp : Application() {
 
-    val locationRepository: LocationRepository
-        get() = ServiceLocator.provideLocationRepository(this)
+    val mainViewModelFactory: MainViewModelFactory
+        get() = ServiceLocator.provideMainViewModelFactory(this)
 }

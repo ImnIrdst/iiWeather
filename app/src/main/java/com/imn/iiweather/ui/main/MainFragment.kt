@@ -11,12 +11,12 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
+import com.imn.iiweather.IIWeatherApp
 import com.imn.iiweather.R
 import com.imn.iiweather.databinding.FragmentMainBinding
 import com.imn.iiweather.domain.model.location.LocationModel
 import com.imn.iiweather.domain.utils.State
 import com.imn.iiweather.domain.utils.humanReadable
-import com.imn.iiweather.ui.common.location.LocationViewModel
 import com.imn.iiweather.utils.checkSelfPermissionCompat
 import com.imn.iiweather.utils.shouldShowRequestPermissionRationaleCompat
 import com.imn.iiweather.utils.showSnackbar
@@ -28,7 +28,9 @@ class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
 
-    private val locationViewModel by viewModels<LocationViewModel>()
+    private val locationViewModel by viewModels<MainViewModel> {
+        (requireContext().applicationContext as IIWeatherApp).mainViewModelFactory
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
