@@ -1,5 +1,6 @@
 package com.imn.iiweather.data.repository.weather
 
+import com.imn.iiweather.domain.model.location.LocationModel
 import com.imn.iiweather.domain.repository.WeatherRepository
 import com.imn.iiweather.domain.utils.asIIError
 import kotlinx.coroutines.flow.catch
@@ -12,7 +13,7 @@ class DefaultWeatherRepository(
     private val remote: WeatherRemoteDataSource
 ) : WeatherRepository {
 
-    override fun getCurrentWeather() = local.getCurrentWeather()
+    override fun getCurrentWeather(locationModel: LocationModel) = local.getCurrentWeather()
         .transform { localEntity ->
             emit(localEntity)
 

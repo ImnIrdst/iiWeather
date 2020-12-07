@@ -28,7 +28,7 @@ class DefaultWeatherRepositoryTest : IITestCase() {
     fun `test when current weather exists in db`() = td.runBlockingTest {
         every { local.getCurrentWeather() } returns listOf(weatherEntity).asFlow()
 
-        repository.getCurrentWeather()
+        repository.getCurrentWeather(locationModel)
             .toList()
             .also {
                 assertThat(it).isEqualTo(listOf(weather))
@@ -52,7 +52,7 @@ class DefaultWeatherRepositoryTest : IITestCase() {
         }
 
         testScope.launch {
-            repository.getCurrentWeather()
+            repository.getCurrentWeather(locationModel)
                 .toList()
                 .also {
                     assertThat(it).isEqualTo(listOf(weather))
@@ -72,7 +72,7 @@ class DefaultWeatherRepositoryTest : IITestCase() {
         coEvery { remote.getCurrentWeather() } throws unknownHostException
 
         testScope.launch {
-            repository.getCurrentWeather()
+            repository.getCurrentWeather(locationModel)
                 .catch { assertThat(it).isInstanceOf(IIError.Network::class.java) }
                 .collect()
         }

@@ -47,7 +47,7 @@ class DefaultWeatherRepositoryInstrumentationTest : IITestCase() {
         val result = mutableListOf<WeatherModel>()
         val latch = CountDownLatch(1)
         val job = testScope.launch {
-            repository.getCurrentWeather()
+            repository.getCurrentWeather(locationModel)
                 .collect {
                     result += it
                     latch.countDown()
@@ -68,7 +68,7 @@ class DefaultWeatherRepositoryInstrumentationTest : IITestCase() {
             fakeDatabase.weatherDao()
                 .insertCurrentWeather(expiredWeatherEntity)
 
-            repository.getCurrentWeather()
+            repository.getCurrentWeather(locationModel)
                 .collect {
                     result += it
                     latch.countDown()
