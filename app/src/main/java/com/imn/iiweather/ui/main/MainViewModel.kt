@@ -15,8 +15,10 @@ class MainViewModel(
 ) : ViewModel() {
     fun loadWeather() = Transformations.switchMap(locationRepository.getLocationLiveData()) {
         when (it.value) {
-            is LocationModel -> weatherRepository.getCurrentWeather(it.value)
-                .asLiveData(viewModelScope.coroutineContext)
+            is LocationModel -> {
+                weatherRepository.getCurrentWeather(it.value)
+                    .asLiveData(viewModelScope.coroutineContext)
+            }
             is IIError -> liveData { emit(State<WeatherModel>(it.value)) }
             is Loading -> liveData { emit(State<WeatherModel>(it.value)) }
             else -> throw IllegalStateException()

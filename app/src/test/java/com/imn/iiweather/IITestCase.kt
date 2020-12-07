@@ -9,10 +9,8 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
-import org.junit.Ignore
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@Ignore("This is base class")
 open class IITestCase {
 
     protected val td = TestCoroutineDispatcher()

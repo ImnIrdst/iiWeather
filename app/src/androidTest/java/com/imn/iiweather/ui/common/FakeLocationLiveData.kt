@@ -9,14 +9,14 @@ import com.imn.iiweather.locationModel
 class FakeLocationLiveData : LiveData<State<LocationModel>>() {
     override fun onActive() {
         super.onActive()
-        value = State.Loading
+        value = State.loading()
     }
 
     fun loadLocation() {
-        postValue(State.Success(locationModel))
+        postValue(State.success(locationModel))
     }
 
     fun sendError() {
-        postValue(State.Failure(locationError))
+        postValue(State.failure(locationError))
     }
 }

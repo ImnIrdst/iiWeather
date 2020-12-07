@@ -46,7 +46,7 @@ class DefaultWeatherRepositoryTest : IITestCase() {
         val localResultStateFlow = MutableStateFlow(expiredWeatherEntity)
         every { local.getCurrentWeather() } returns localResultStateFlow
 
-        coEvery { remote.getCurrentWeather() } answers {
+        coEvery { remote.getCurrentWeather(locationModel) } answers {
             localResultStateFlow.value = weatherEntity
             weatherResponse
         }
@@ -58,10 +58,9 @@ class DefaultWeatherRepositoryTest : IITestCase() {
                     assertThat(it).isEqualTo(listOf(weather))
                 }
         }
-
         coVerify {
             local.getCurrentWeather()
-            remote.getCurrentWeather()
+            remote.getCurrentWeather(locationModel)
             local.insertCurrentWeather(weatherEntity)
         }
     }
@@ -69,7 +68,7 @@ class DefaultWeatherRepositoryTest : IITestCase() {
     @Test
     fun `test when remote throws exception`() = td.runBlockingTest {
         every { local.getCurrentWeather() } returns listOf(expiredWeatherEntity).asFlow()
-        coEvery { remote.getCurrentWeather() } throws unknownHostException
+        coEvery { remote.getCurrentWeather(locationModel) } throws unknownHostException
 
         testScope.launch {
             repository.getCurrentWeather(locationModel)
@@ -79,7 +78,7 @@ class DefaultWeatherRepositoryTest : IITestCase() {
 
         coVerify {
             local.getCurrentWeather()
-            remote.getCurrentWeather()
+            remote.getCurrentWeather(locationModel)
         }
     }
 }

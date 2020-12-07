@@ -2,26 +2,28 @@ package com.imn.iiweather.data.repository.weather
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import com.imn.iiweather.IITestCase
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.MediumTest
+import com.google.common.truth.Truth.assertThat
+import com.imn.iiweather.*
 import com.imn.iiweather.data.local.AppDatabase
 import com.imn.iiweather.di.ServiceLocator
 import com.imn.iiweather.domain.model.location.WeatherModel
 import com.imn.iiweather.domain.repository.WeatherRepository
-import com.imn.iiweather.expiredWeatherEntity
-import com.imn.iiweather.weather
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.imn.iiweather.domain.utils.State
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-@OptIn(ExperimentalCoroutinesApi::class)
-class DefaultWeatherRepositoryInstrumentationTest : IITestCase() {
-
+@MediumTest
+@RunWith(AndroidJUnit4::class)
+class DefaultWeatherRepositoryInstrumentationTest : IIAndroidTestCase() {
     private lateinit var repository: WeatherRepository
     private lateinit var fakeDatabase: AppDatabase
 
@@ -44,8 +46,8 @@ class DefaultWeatherRepositoryInstrumentationTest : IITestCase() {
 
     @Test
     fun testWhenWeatherDoesNotExistInDatabase() = td.runBlockingTest {
-        val result = mutableListOf<WeatherModel>()
-        val latch = CountDownLatch(1)
+        val result = mutableListOf<State<WeatherModel>>()
+        val latch = CountDownLatch(2)
         val job = testScope.launch {
             repository.getCurrentWeather(locationModel)
                 .collect {
@@ -53,15 +55,20 @@ class DefaultWeatherRepositoryInstrumentationTest : IITestCase() {
                     latch.countDown()
                 }
         }
-        latch.await()
+        latch.await(LATCH_AWAIT_TIMEOUT, TimeUnit.SECONDS)
         job.cancel()
-        assert(result == listOf(weather))
+        assertThat(result).isEqualTo(
+            listOf(
+                State.loading(),
+                State.success(weather),
+            )
+        )
     }
 
     @Test
     fun testWhenWeatherIsExpired() = td.runBlockingTest {
-        val result = mutableListOf<WeatherModel>()
-        val latch = CountDownLatch(2)
+        val result = mutableListOf<State<WeatherModel>>()
+        val latch = CountDownLatch(3)
 
         val job = testScope.launch {
 
@@ -74,8 +81,14 @@ class DefaultWeatherRepositoryInstrumentationTest : IITestCase() {
                     latch.countDown()
                 }
         }
-        latch.await(5, TimeUnit.SECONDS)
+        latch.await(LATCH_AWAIT_TIMEOUT, TimeUnit.SECONDS)
         job.cancel()
-        assert(result == listOf(weather, weather))
+        assertThat(result).isEqualTo(
+            listOf(
+                State.loading(),
+                State.success(weather),
+                State.success(weather)
+            )
+        )
     }
 }

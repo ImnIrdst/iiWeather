@@ -27,12 +27,11 @@ data class State<out T>(
 }
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-fun <T> withStates(debounce: Long = 1, flowProvider: () -> Flow<T>): Flow<State<T>> {
+fun <T> withStates(flowProvider: () -> Flow<T>): Flow<State<T>> {
     return flow {
         emit(State.loading())
 
         flowProvider.invoke()
-            .debounce(debounce)
             .mapLatest { State.success(it) }
             .catch { emit(State.failure(it.asIIError())) }
             .also { emitAll(it) }

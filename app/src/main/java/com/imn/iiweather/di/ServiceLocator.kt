@@ -94,7 +94,8 @@ object ServiceLocator {
 //        }
 //    }
 
-    private fun provideWeatherRemoteDataSource() = FakeWeatherRemoteDataSource()
+    private fun provideWeatherRemoteDataSource() =
+        weatherRemoteDataSource ?: FakeWeatherRemoteDataSource()
 
     @Volatile
     var weatherLocalDataSource: WeatherLocalDataSource? = null

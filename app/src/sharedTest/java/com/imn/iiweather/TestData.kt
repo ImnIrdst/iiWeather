@@ -44,3 +44,5 @@ val weatherResponse = WeatherResponse(weatherJson)
 
 val unknownHostException = UnknownHostException()
 val iiNetworkError = IIError.Network(unknownHostException)
+
+const val LATCH_AWAIT_TIMEOUT = 200L
