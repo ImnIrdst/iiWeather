@@ -33,7 +33,7 @@ fun <T> withStates(flowProvider: () -> Flow<T>): Flow<State<T>> {
 
         flowProvider.invoke()
             .mapLatest { State.success(it) }
-            .catch { emit(State.failure(it.asIIError())) }
             .also { emitAll(it) }
-    }
+
+    }.catch { emit(State.failure(it.asIIError())) }
 }

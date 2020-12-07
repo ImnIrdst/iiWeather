@@ -1,6 +1,5 @@
 package com.imn.iiweather
 
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -10,10 +9,8 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
-import org.junit.runner.RunWith
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@RunWith(AndroidJUnit4::class)
 open class IIAndroidTestCase {
 
     protected val td = TestCoroutineDispatcher()

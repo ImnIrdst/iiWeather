@@ -3,7 +3,6 @@ package com.imn.iiweather.data.repository.weather
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.MediumTest
 import com.google.common.truth.Truth.assertThat
 import com.imn.iiweather.*
 import com.imn.iiweather.data.local.AppDatabase
@@ -21,7 +20,6 @@ import org.junit.runner.RunWith
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-@MediumTest
 @RunWith(AndroidJUnit4::class)
 class DefaultWeatherRepositoryInstrumentationTest : IIAndroidTestCase() {
     private lateinit var repository: WeatherRepository

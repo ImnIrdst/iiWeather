@@ -30,5 +30,4 @@ class DefaultWeatherRepository(
             .filterNotNull()
             .map { it.toWeatherModel() }
     }
-
 }

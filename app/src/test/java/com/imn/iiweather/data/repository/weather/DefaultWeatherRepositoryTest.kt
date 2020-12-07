@@ -4,12 +4,15 @@ import com.google.common.truth.Truth.assertThat
 import com.imn.iiweather.*
 import com.imn.iiweather.domain.repository.WeatherRepository
 import com.imn.iiweather.domain.utils.IIError
+import com.imn.iiweather.domain.utils.State
+import com.imn.iiweather.utils.BuildUtils
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
+import org.junit.Before
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -18,6 +21,12 @@ class DefaultWeatherRepositoryTest : IITestCase() {
     private val local = mockk<WeatherLocalDataSource>(relaxUnitFun = true)
     private val remote = mockk<WeatherRemoteDataSource>(relaxUnitFun = true)
     private val repository: WeatherRepository = DefaultWeatherRepository(local, remote)
+
+    @Before
+    fun setUp() {
+        mockkObject(BuildUtils)
+        every { BuildUtils.isDebug } returns false
+    }
 
     @After
     fun tearDown() {
@@ -31,7 +40,7 @@ class DefaultWeatherRepositoryTest : IITestCase() {
         repository.getCurrentWeather(locationModel)
             .toList()
             .also {
-                assertThat(it).isEqualTo(listOf(weather))
+                assertThat(it).isEqualTo(listOf(State.loading(), State.success(weather)))
             }
 
         coVerify {

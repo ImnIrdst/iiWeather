@@ -81,7 +81,7 @@ object ServiceLocator {
 //            return weatherRemoteDataSource ?: DefaultWeatherRemoteDataSource(
 //                OkHttpClient.Builder()
 //                    .apply {
-//                        if (BuildConfig.DEBUG) {
+//                        if (BuildUtils.isDebug) {
 //                            addInterceptor(
 //                                HttpLoggingInterceptor().apply {
 //                                    level = HttpLoggingInterceptor.Level.BODY
