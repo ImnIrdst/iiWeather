@@ -10,8 +10,15 @@
     <string name="hello_main_fragment">Hello main fragment</string>
     <string name="hello_leak_fragment">Hello leak fragment. Arg: %1$s</string>
 
+    <string name="time_">Time: %1$s</string>
+    <string name="summary_">Summary: %1$s</string>
+    <string name="temperature_">Temperature: %1$.1f °F</string>
+    <string name="humidity_">Humidity: %1$.1f</string>
+    <string name="pressure_">Pressure: %1$.1f</string>
+    <string name="windSpeed_">WindSpeed: %1$.1f</string>
     <string name="latitude_">Latitude: %1$.4f</string>
     <string name="longitude_">Longitude: %1$.4f</string>
+
     <string name="ok">OK</string>
     <string name="location_permission_required">Location Permission Required</string>
     <string name="location_permission_granted">Location Permission Granted</string>

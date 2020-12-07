@@ -1,5 +1,7 @@
 package com.imn.iiweather.domain.model.location
 
+import com.imn.iiweather.utils.toFormattedDate
+
 data class WeatherModel(
     val time: Long?,
     val summary: String?,
@@ -9,4 +11,6 @@ data class WeatherModel(
     val windSpeed: Double?,
     val longitude: Double?,
     val latitude: Double?,
-)
+) {
+    val formattedDate = time?.toFormattedDate()
+}

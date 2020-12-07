@@ -20,6 +20,7 @@ import com.imn.iiweather.domain.utils.Loading
 import com.imn.iiweather.domain.utils.State
 import com.imn.iiweather.domain.utils.humanReadable
 import com.imn.iiweather.utils.checkSelfPermissionCompat
+import com.imn.iiweather.utils.setTextOrGone
 import com.imn.iiweather.utils.shouldShowRequestPermissionRationaleCompat
 import com.imn.iiweather.utils.showSnackbar
 
@@ -29,6 +30,7 @@ import com.imn.iiweather.utils.showSnackbar
 class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
+    private var snackBar: Snackbar? = null
 
     private val locationViewModel by viewModels<MainViewModel> {
         (requireContext().applicationContext as IIWeatherApp).mainViewModelFactory
@@ -37,41 +39,73 @@ class MainFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ) = FragmentMainBinding.inflate(inflater).also { binding = it }.root
+    ) = FragmentMainBinding.inflate(inflater).also { binding = it; initUI() }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         listenOnLocationAndWeatherUpdates()
     }
 
-    private fun populateUI(state: State<WeatherModel>) = with(binding) {
+    private fun handleState(state: State<WeatherModel>) = with(binding) {
 
         progressBar.isVisible = state.isLoading
 
-        when (state.value) {
+        when (val value = state.value) {
             is WeatherModel -> {
-                longitudeTextView.text = getString(R.string.longitude_, state.value.longitude)
-                latitudeTextView.text = getString(R.string.latitude_, state.value.latitude)
+                populateUI(value)
             }
             is IIError -> {
-                coordinatorLayout.showSnackbar(state.value.humanReadable(),
+                populateUI(null)
+                snackBar = coordinatorLayout.showSnackbar(value.humanReadable(),
                     Snackbar.LENGTH_INDEFINITE,
                     R.string.retry) {
                     listenOnLocationAndWeatherUpdates()
                 }
             }
-            is Loading -> Unit
+            is Loading -> populateUI(null)
             else -> {
                 throw IllegalStateException()
             }
         }
     }
 
+    private fun initUI() {
+        populateUI(null)
+    }
+
+    private fun populateUI(weather: WeatherModel?) = with(binding) {
+        snackBar?.dismiss()
+        
+        timeTextView.setTextOrGone(
+            weather?.formattedDate?.let { getString(R.string.time_, it) }
+        )
+        summaryTextView.setTextOrGone(
+            weather?.summary?.let { getString(R.string.summary_, it) }
+        )
+        temperatureTextView.setTextOrGone(
+            weather?.temperature?.let { getString(R.string.temperature_, it) }
+        )
+        humidityTextView.setTextOrGone(
+            weather?.humidity?.let { getString(R.string.humidity_, it) }
+        )
+        pressureTextView.setTextOrGone(
+            weather?.pressure?.let { getString(R.string.pressure_, it) }
+        )
+        windSpeedTextView.setTextOrGone(
+            weather?.windSpeed?.let { getString(R.string.windSpeed_, it) }
+        )
+        latitudeTextView.setTextOrGone(
+            weather?.latitude?.let { getString(R.string.latitude_, it) }
+        )
+        longitudeTextView.setTextOrGone(
+            weather?.longitude?.let { getString(R.string.longitude_, it) }
+        )
+    }
 
     private fun listenOnLocationAndWeatherUpdates() {
         if (checkSelfPermissionCompat(LOCATION_PERMISSIONS)) {
             locationViewModel.loadWeather().observe(viewLifecycleOwner) { state ->
-                state?.let { populateUI(it) }
+                state?.let { handleState(it) }
             }
         } else {
             requestLocationPermission()
@@ -82,13 +116,13 @@ class MainFragment : Fragment() {
         ActivityResultContracts.RequestMultiplePermissions()
     ) { isGranted ->
         if (isGranted.values.all { it == true }) {
-            listenOnLocationAndWeatherUpdates()
-            binding.coordinatorLayout.showSnackbar(
+            snackBar = binding.coordinatorLayout.showSnackbar(
                 getString(R.string.location_permission_granted),
                 Snackbar.LENGTH_SHORT
             )
+            listenOnLocationAndWeatherUpdates()
         } else {
-            binding.coordinatorLayout.showSnackbar(
+            snackBar = binding.coordinatorLayout.showSnackbar(
                 R.string.location_permission_required,
                 Snackbar.LENGTH_INDEFINITE,
                 R.string.ok
@@ -100,7 +134,7 @@ class MainFragment : Fragment() {
 
     private fun requestLocationPermission() {
         if (shouldShowRequestPermissionRationaleCompat(LOCATION_PERMISSIONS)) {
-            binding.coordinatorLayout.showSnackbar(
+            snackBar = binding.coordinatorLayout.showSnackbar(
                 R.string.location_permission_required,
                 Snackbar.LENGTH_INDEFINITE,
                 R.string.ok

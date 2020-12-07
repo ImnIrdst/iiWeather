@@ -10,38 +10,88 @@
         android:id="@+id/coordinatorLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/latitude_text_view"
-        style="@style/TextAppearance.AppCompat.Large"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_double"
+    <androidx.constraintlayout.helper.widget.Flow
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:flow_verticalGap="@dimen/spacing_normal"
+        android:layout_marginHorizontal="@dimen/spacing_double"
+        app:flow_verticalStyle="packed"
+        app:constraint_referenced_ids="latitude_text_view,longitude_text_view,time_text_view,summary_text_view,temperature_text_view,humidityTextView,pressure_text_view,windSpeed_text_view"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/longitude_text_view"
-        style="@style/TextAppearance.AppCompat.Large"
-        android:layout_width="wrap_content"
+        android:id="@+id/latitude_text_view"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_double"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/latitude_text_view" />
+        tools:text="latitude" />
+
+    <TextView
+        android:id="@+id/longitude_text_view"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="longitude" />
+
+    <TextView
+        android:id="@+id/time_text_view"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="time" />
+
+    <TextView
+        android:id="@+id/summary_text_view"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="summary" />
+
+    <TextView
+        android:id="@+id/temperature_text_view"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="temperature" />
+
+    <TextView
+        android:id="@+id/humidityTextView"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="humidity" />
+
+
+    <TextView
+        android:id="@+id/pressure_text_view"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="pressure" />
+
+    <TextView
+        android:id="@+id/windSpeed_text_view"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="windSpeed" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

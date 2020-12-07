@@ -3,29 +3,25 @@ package com.imn.iiweather.utils
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
 
-fun View.showSnackbar(msgId: Int, length: Int) {
+fun View.showSnackbar(msgId: Int, length: Int) =
     showSnackbar(context.getString(msgId), length)
-}
 
-fun View.showSnackbar(msg: String, length: Int) {
+fun View.showSnackbar(msg: String, length: Int) =
     showSnackbar(msg, length, null) {}
-}
 
 fun View.showSnackbar(
     msgId: Int,
     length: Int,
     actionMessageId: Int,
     action: (View) -> Unit,
-) {
-    showSnackbar(context.getString(msgId), length, context.getString(actionMessageId), action)
-}
+) = showSnackbar(context.getString(msgId), length, context.getString(actionMessageId), action)
 
 fun View.showSnackbar(
     msg: String,
     length: Int,
     actionMessage: CharSequence?,
     action: (View) -> Unit,
-) {
+): Snackbar {
     val snackbar = Snackbar.make(this, msg, length)
     if (actionMessage != null) {
         snackbar.setAction(actionMessage) {
@@ -33,4 +29,5 @@ fun View.showSnackbar(
         }
     }
     snackbar.show()
+    return snackbar
 }
