@@ -21,6 +21,8 @@ val weather = WeatherModel(
     humidity = 0.69,
     pressure = 1022.7,
     windSpeed = null,
+    longitude = -122.0593,
+    latitude = 37.3806,
 )
 
 val weatherEntity = WeatherEntity(
@@ -30,6 +32,8 @@ val weatherEntity = WeatherEntity(
     humidity = 0.69,
     pressure = 1022.7,
     windSpeed = null,
+    longitude = -122.0593,
+    latitude = 37.3806,
     creationTime = System.currentTimeMillis()
 )
 

@@ -7,4 +7,6 @@ data class WeatherModel(
     val humidity: Double?,
     val pressure: Double?,
     val windSpeed: Double?,
+    val longitude: Double?,
+    val latitude: Double?,
 )

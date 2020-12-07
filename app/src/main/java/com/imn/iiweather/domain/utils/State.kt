@@ -27,7 +27,7 @@ data class State<out T>(
 }
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-fun <T> withStates(debounce: Long = 0, flowProvider: () -> Flow<T>): Flow<State<T>> {
+fun <T> withStates(debounce: Long = 1, flowProvider: () -> Flow<T>): Flow<State<T>> {
     return flow {
         emit(State.loading())
 

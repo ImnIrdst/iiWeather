@@ -13,8 +13,6 @@ class MainViewModel(
     private val weatherRepository: WeatherRepository,
     private val locationRepository: LocationRepository,
 ) : ViewModel() {
-    fun getLocationData() = locationRepository.getLocationLiveData()
-
     fun loadWeather() = Transformations.switchMap(locationRepository.getLocationLiveData()) {
         when (it.value) {
             is LocationModel -> weatherRepository.getCurrentWeather(it.value)

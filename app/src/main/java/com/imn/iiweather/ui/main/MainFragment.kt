@@ -14,8 +14,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.imn.iiweather.IIWeatherApp
 import com.imn.iiweather.R
 import com.imn.iiweather.databinding.FragmentMainBinding
-import com.imn.iiweather.domain.model.location.LocationModel
+import com.imn.iiweather.domain.model.location.WeatherModel
 import com.imn.iiweather.domain.utils.IIError
+import com.imn.iiweather.domain.utils.Loading
 import com.imn.iiweather.domain.utils.State
 import com.imn.iiweather.domain.utils.humanReadable
 import com.imn.iiweather.utils.checkSelfPermissionCompat
@@ -40,30 +41,37 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        listenOnLocationUpdates()
+        listenOnLocationAndWeatherUpdates()
     }
 
-    private fun populateLocationData(state: State<LocationModel>) = with(binding) {
+    private fun populateUI(state: State<WeatherModel>) = with(binding) {
 
         progressBar.isVisible = state.isLoading
 
-        if (state.value is LocationModel) {
-            longitudeTextView.text = getString(R.string.longitude_, state.value.longitude)
-            latitudeTextView.text = getString(R.string.latitude_, state.value.latitude)
-        } else if (state.value is IIError) {
-            coordinatorLayout.showSnackbar(state.value.humanReadable(),
-                Snackbar.LENGTH_INDEFINITE,
-                R.string.retry) {
-                listenOnLocationUpdates()
+        when (state.value) {
+            is WeatherModel -> {
+                longitudeTextView.text = getString(R.string.longitude_, state.value.longitude)
+                latitudeTextView.text = getString(R.string.latitude_, state.value.latitude)
+            }
+            is IIError -> {
+                coordinatorLayout.showSnackbar(state.value.humanReadable(),
+                    Snackbar.LENGTH_INDEFINITE,
+                    R.string.retry) {
+                    listenOnLocationAndWeatherUpdates()
+                }
+            }
+            is Loading -> Unit
+            else -> {
+                throw IllegalStateException()
             }
         }
     }
 
 
-    private fun listenOnLocationUpdates() {
+    private fun listenOnLocationAndWeatherUpdates() {
         if (checkSelfPermissionCompat(LOCATION_PERMISSIONS)) {
-            locationViewModel.getLocationData().observe(viewLifecycleOwner) { state ->
-                state?.let { populateLocationData(it) }
+            locationViewModel.loadWeather().observe(viewLifecycleOwner) { state ->
+                state?.let { populateUI(it) }
             }
         } else {
             requestLocationPermission()
@@ -74,7 +82,7 @@ class MainFragment : Fragment() {
         ActivityResultContracts.RequestMultiplePermissions()
     ) { isGranted ->
         if (isGranted.values.all { it == true }) {
-            listenOnLocationUpdates()
+            listenOnLocationAndWeatherUpdates()
             binding.coordinatorLayout.showSnackbar(
                 getString(R.string.location_permission_granted),
                 Snackbar.LENGTH_SHORT

@@ -61,12 +61,15 @@ class FusedLocationLiveData(context: Context) : LiveData<State<LocationModel>>()
         if (location == null) {
             sendError(location)
         } else {
-            value = State.success(
+            val state = State.success(
                 LocationModel(
                     longitude = location.longitude,
                     latitude = location.latitude
                 )
             )
+            if (state != value) {
+                value = state
+            }
         }
     }
 

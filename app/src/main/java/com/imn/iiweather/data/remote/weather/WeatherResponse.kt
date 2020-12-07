@@ -21,6 +21,8 @@ class WeatherResponse(
                     humidity = cur.getDoubleOrNull(HUMIDITY),
                     pressure = cur.getDoubleOrNull(PRESSURE),
                     windSpeed = cur.getDoubleOrNull(WIND_SPEED),
+                    latitude = root.getDoubleOrNull(LATITUDE),
+                    longitude = root.getDoubleOrNull(LONGITUDE),
                     creationTime = System.currentTimeMillis()
                 )
             }
@@ -29,6 +31,8 @@ class WeatherResponse(
     }
 
     companion object {
+        private const val LATITUDE = "latitude"
+        private const val LONGITUDE = "longitude"
         private const val CURRENTLY = "currently"
         private const val TIME = "time"
         private const val SUMMARY = "summary"

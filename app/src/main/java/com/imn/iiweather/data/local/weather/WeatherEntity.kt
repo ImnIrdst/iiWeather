@@ -14,6 +14,8 @@ data class WeatherEntity(
     val humidity: Double?,
     val pressure: Double?,
     val windSpeed: Double?,
+    val latitude: Double?,
+    val longitude: Double?,
     val creationTime: Long,
 ) {
     fun isExpired() = System.currentTimeMillis() - creationTime > EXPIRATION_THRESHOLD
@@ -25,6 +27,8 @@ data class WeatherEntity(
         humidity = humidity,
         pressure = pressure,
         windSpeed = windSpeed,
+        latitude = latitude,
+        longitude = longitude,
     )
 
     override fun equals(other: Any?): Boolean {
