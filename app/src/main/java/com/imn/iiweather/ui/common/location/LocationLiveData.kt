@@ -9,8 +9,10 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.imn.iiweather.domain.model.location.LocationModel
+import com.imn.iiweather.domain.utils.IIError
+import com.imn.iiweather.domain.utils.State
 
-class LocationLiveData(context: Context) : LiveData<LocationModel>() {
+class LocationLiveData(context: Context) : LiveData<State<LocationModel>>() {
 
     private var fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
@@ -23,14 +25,13 @@ class LocationLiveData(context: Context) : LiveData<LocationModel>() {
     @SuppressLint("MissingPermission")
     override fun onActive() {
         super.onActive()
+        value = State.Loading
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
-                location?.also {
-                    setLocationData(it)
-                }
+                setLocationData(location)
             }
             .addOnFailureListener {
-                
+                sendError(null, it)
             }
         startLocationUpdates()
     }
@@ -46,17 +47,32 @@ class LocationLiveData(context: Context) : LiveData<LocationModel>() {
 
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
-            locationResult ?: return
+            if (locationResult == null) {
+                sendError(locationResult)
+                return
+            }
             for (location in locationResult.locations) {
                 setLocationData(location)
             }
         }
     }
 
-    private fun setLocationData(location: Location) {
-        value = LocationModel(
-            longitude = location.longitude,
-            latitude = location.latitude
+    private fun setLocationData(location: Location?) {
+        if (location == null) {
+            sendError(location)
+        } else {
+            value = State.Success(
+                LocationModel(
+                    longitude = location.longitude,
+                    latitude = location.latitude
+                )
+            )
+        }
+    }
+
+    private fun sendError(location: Location?, cause: Throwable? = null) {
+        value = State.Failure(
+            IIError.Location(Throwable("locationResult is $location", cause))
         )
     }
 

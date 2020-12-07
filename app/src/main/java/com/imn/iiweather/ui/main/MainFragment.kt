@@ -7,12 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.imn.iiweather.R
 import com.imn.iiweather.databinding.FragmentMainBinding
 import com.imn.iiweather.domain.model.location.LocationModel
+import com.imn.iiweather.domain.utils.State
+import com.imn.iiweather.domain.utils.humanReadable
 import com.imn.iiweather.ui.common.location.LocationViewModel
 import com.imn.iiweather.utils.checkSelfPermissionCompat
 import com.imn.iiweather.utils.shouldShowRequestPermissionRationaleCompat
@@ -37,17 +40,29 @@ class MainFragment : Fragment() {
         listenOnLocationUpdates()
     }
 
-    private fun populateLocationData(locationModel: LocationModel) = with(binding) {
-        latitudeTextView.text = getString(R.string.latitude_, locationModel.latitude)
-        longitudeTextView.text = getString(R.string.longitude_, locationModel.longitude)
+    private fun populateLocationData(state: State<LocationModel>?) = with(binding) {
+
+        progressBar.isVisible = state is State.Loading
+
+        when (state) {
+            is State.Success -> {
+                longitudeTextView.text = getString(R.string.longitude_, state.value.longitude)
+                latitudeTextView.text = getString(R.string.latitude_, state.value.latitude)
+            }
+            is State.Failure -> {
+                coordinatorLayout.showSnackbar(state.error.humanReadable(),
+                    Snackbar.LENGTH_INDEFINITE,
+                    R.string.retry) {
+                    listenOnLocationUpdates()
+                }
+            }
+            else -> Unit
+        }
     }
 
 
     private fun listenOnLocationUpdates() {
         if (checkSelfPermissionCompat(LOCATION_PERMISSIONS)) {
-            binding.coordinatorLayout.showSnackbar("Has Permission",
-                Snackbar.LENGTH_SHORT) // TODO make snackbar s better and refactor permission utils
-
             locationViewModel.getLocationData().observe(viewLifecycleOwner) {
                 populateLocationData(it)
             }
@@ -59,9 +74,12 @@ class MainFragment : Fragment() {
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { isGranted ->
-        if (isGranted.values.all { true }) {
+        if (isGranted.values.all { it == true }) {
             listenOnLocationUpdates()
-            binding.coordinatorLayout.showSnackbar("Location Granted", Snackbar.LENGTH_SHORT)
+            binding.coordinatorLayout.showSnackbar(
+                getString(R.string.location_permission_granted),
+                Snackbar.LENGTH_SHORT
+            )
         } else {
             binding.coordinatorLayout.showSnackbar(
                 R.string.location_permission_required,
@@ -69,7 +87,6 @@ class MainFragment : Fragment() {
                 R.string.ok
             ) {
                 requestLocationPermission()
-                requireView().showSnackbar("Location Denied", Snackbar.LENGTH_SHORT)
             }
         }
     }
@@ -81,12 +98,10 @@ class MainFragment : Fragment() {
                 Snackbar.LENGTH_INDEFINITE,
                 R.string.ok
             ) {
-                requestLocationPermission()
+                requestPermissionLauncher.launch(LOCATION_PERMISSIONS)
             }
 
         } else {
-            requireView().showSnackbar("Location Permission not available", Snackbar.LENGTH_SHORT)
-
             requestPermissionLauncher.launch(LOCATION_PERMISSIONS)
         }
     }

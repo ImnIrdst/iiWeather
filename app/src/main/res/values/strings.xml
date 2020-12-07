@@ -14,4 +14,8 @@
     <string name="longitude_">Longitude: %1$.4f</string>
     <string name="ok">OK</string>
     <string name="location_permission_required">Location Permission Required</string>
+    <string name="location_permission_granted">Location Permission Granted</string>
+    <string name="retry">Retry</string>
+    <string name="failed_to_get_location">Failed to get location!</string>
+    <string name="unknown_error">Unexpected error happened!</string>
 </resources>
