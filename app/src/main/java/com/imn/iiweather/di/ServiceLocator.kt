@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.Flow
 
 object ServiceLocator {
 
+
     private val lock = Any()
 
     @Volatile
@@ -62,7 +63,7 @@ object ServiceLocator {
     var weatherRepository: WeatherRepository? = null
         @VisibleForTesting set
 
-    private fun provideWeatherRepository(applicationContext: Context): WeatherRepository {
+    fun provideWeatherRepository(applicationContext: Context): WeatherRepository {
         synchronized(lock) {
             return weatherRepository ?: DefaultWeatherRepository(
                 provideWeatherLocalDataSource(applicationContext),
@@ -70,6 +71,10 @@ object ServiceLocator {
             )
         }
     }
+
+    @Volatile
+    var weatherRemoteDataSource: WeatherRemoteDataSource? = null
+        @VisibleForTesting set
 
     private fun provideWeatherRemoteDataSource(): WeatherRemoteDataSource {
         synchronized(lock) {
