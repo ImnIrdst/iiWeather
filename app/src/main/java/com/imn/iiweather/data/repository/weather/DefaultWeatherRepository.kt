@@ -13,6 +13,12 @@ class DefaultWeatherRepository(
     override fun getCurrentWeather() = local.getCurrentWeather()
         .transform { localEntity ->
             emit(localEntity)
+
+            if (localEntity == null || localEntity.isExpired()) {
+                remote.getCurrentWeather().toWeatherEntity()?.let {
+                    local.insertCurrentWeather(it)
+                }
+            }
         }
         .filterNotNull()
         .map { it.toWeatherModel() }

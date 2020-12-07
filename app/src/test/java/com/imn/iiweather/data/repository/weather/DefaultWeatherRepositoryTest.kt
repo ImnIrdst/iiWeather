@@ -52,7 +52,7 @@ class DefaultWeatherRepositoryTest : IITestCase() {
         val localResultStateFlow = MutableStateFlow(expiredWeatherEntity)
         every { local.getCurrentWeather() } returns localResultStateFlow
 
-        coEvery { remote.getWeather() } answers {
+        coEvery { remote.getCurrentWeather() } answers {
             localResultStateFlow.value = weatherEntity
             weatherResponse
         }
@@ -64,10 +64,10 @@ class DefaultWeatherRepositoryTest : IITestCase() {
                     assertThat(it).isEqualTo(listOf(weather))
                 }
         }
-        
+
         coVerify {
             local.getCurrentWeather()
-            remote.getWeather()
+            remote.getCurrentWeather()
             local.insertCurrentWeather(weatherEntity)
         }
     }

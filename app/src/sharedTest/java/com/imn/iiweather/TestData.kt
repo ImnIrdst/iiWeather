@@ -1,7 +1,7 @@
 package com.imn.iiweather
 
 import com.imn.iiweather.data.local.weather.WeatherEntity
-import com.imn.iiweather.data.repository.weather.WeatherResponse
+import com.imn.iiweather.data.remote.weather.WeatherResponse
 import com.imn.iiweather.domain.model.location.LocationModel
 import com.imn.iiweather.domain.model.location.WeatherModel
 import com.imn.iiweather.domain.utils.IIError
