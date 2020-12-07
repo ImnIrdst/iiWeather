@@ -26,7 +26,7 @@ class DefaultWeatherRepositoryTest : IITestCase() {
     }
 
     @Test
-    fun `test when current weather exists in db`() = runBlockingTest {
+    fun `test when current weather exists in db`() = td.runBlockingTest {
         repository.getCurrentWeather()
             .toList()
             .also {
