@@ -15,6 +15,7 @@ import com.imn.iiweather.IIWeatherApp
 import com.imn.iiweather.R
 import com.imn.iiweather.databinding.FragmentMainBinding
 import com.imn.iiweather.domain.model.location.LocationModel
+import com.imn.iiweather.domain.utils.IIError
 import com.imn.iiweather.domain.utils.State
 import com.imn.iiweather.domain.utils.humanReadable
 import com.imn.iiweather.utils.checkSelfPermissionCompat
@@ -42,31 +43,27 @@ class MainFragment : Fragment() {
         listenOnLocationUpdates()
     }
 
-    private fun populateLocationData(state: State<LocationModel>?) = with(binding) {
+    private fun populateLocationData(state: State<LocationModel>) = with(binding) {
 
-        progressBar.isVisible = state is State.Loading
+        progressBar.isVisible = state.isLoading
 
-        when (state) {
-            is State.Success -> {
-                longitudeTextView.text = getString(R.string.longitude_, state.value.longitude)
-                latitudeTextView.text = getString(R.string.latitude_, state.value.latitude)
+        if (state.value is LocationModel) {
+            longitudeTextView.text = getString(R.string.longitude_, state.value.longitude)
+            latitudeTextView.text = getString(R.string.latitude_, state.value.latitude)
+        } else if (state.value is IIError) {
+            coordinatorLayout.showSnackbar(state.value.humanReadable(),
+                Snackbar.LENGTH_INDEFINITE,
+                R.string.retry) {
+                listenOnLocationUpdates()
             }
-            is State.Failure -> {
-                coordinatorLayout.showSnackbar(state.error.humanReadable(),
-                    Snackbar.LENGTH_INDEFINITE,
-                    R.string.retry) {
-                    listenOnLocationUpdates()
-                }
-            }
-            else -> Unit
         }
     }
 
 
     private fun listenOnLocationUpdates() {
         if (checkSelfPermissionCompat(LOCATION_PERMISSIONS)) {
-            locationViewModel.getLocationData().observe(viewLifecycleOwner) {
-                populateLocationData(it)
+            locationViewModel.getLocationData().observe(viewLifecycleOwner) { state ->
+                state?.let { populateLocationData(it) }
             }
         } else {
             requestLocationPermission()

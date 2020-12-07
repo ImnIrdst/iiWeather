@@ -25,7 +25,7 @@ class FusedLocationLiveData(context: Context) : LiveData<State<LocationModel>>()
     @SuppressLint("MissingPermission")
     override fun onActive() {
         super.onActive()
-        value = State.Loading
+        value = State.loading()
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
                 setLocationData(location)
@@ -61,7 +61,7 @@ class FusedLocationLiveData(context: Context) : LiveData<State<LocationModel>>()
         if (location == null) {
             sendError(location)
         } else {
-            value = State.Success(
+            value = State.success(
                 LocationModel(
                     longitude = location.longitude,
                     latitude = location.latitude
@@ -71,7 +71,7 @@ class FusedLocationLiveData(context: Context) : LiveData<State<LocationModel>>()
     }
 
     private fun sendError(location: Location?, cause: Throwable? = null) {
-        value = State.Failure(
+        value = State.failure(
             IIError.Location(Throwable("locationResult is $location", cause))
         )
     }

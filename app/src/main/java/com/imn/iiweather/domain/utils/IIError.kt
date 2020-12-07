@@ -7,6 +7,10 @@ sealed class IIError(cause: Throwable) : Throwable(cause) {
     class Network(cause: Throwable) : IIError(cause)
     class Unknown(cause: Throwable) : IIError(cause)
     class Location(cause: Throwable) : IIError(cause)
+
+    override fun equals(other: Any?): Boolean = other is IIError && cause == other.cause
+    override fun hashCode(): Int = cause.hashCode()
+    override fun toString(): String = "IIError($cause)"
 }
 
 
