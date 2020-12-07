@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import com.imn.iiweather.data.local.FusedLocationLiveData
-import com.imn.iiweather.data.repository.DefaultLocationRepository
+import com.imn.iiweather.data.repository.location.DefaultLocationRepository
 import com.imn.iiweather.domain.model.location.LocationModel
 import com.imn.iiweather.domain.repository.LocationRepository
 import com.imn.iiweather.domain.utils.State

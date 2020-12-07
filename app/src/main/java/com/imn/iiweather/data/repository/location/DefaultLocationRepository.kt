@@ -1,4 +1,4 @@
-package com.imn.iiweather.data.repository
+package com.imn.iiweather.data.repository.location
 
 import androidx.lifecycle.LiveData
 import com.imn.iiweather.domain.model.location.LocationModel
