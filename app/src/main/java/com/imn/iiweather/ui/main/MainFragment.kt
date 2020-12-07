@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.imn.iiweather.IIWeatherApp
 import com.imn.iiweather.R
@@ -29,7 +30,9 @@ import com.imn.iiweather.utils.showSnackbar
  */
 class MainFragment : Fragment() {
 
-    private lateinit var binding: FragmentMainBinding
+    private var _binding: FragmentMainBinding? = null
+    private val binding get() = _binding!!
+
     private var snackBar: Snackbar? = null
 
     private val locationViewModel by viewModels<MainViewModel> {
@@ -39,7 +42,12 @@ class MainFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ) = FragmentMainBinding.inflate(inflater).also { binding = it; initUI() }.root
+    ) = FragmentMainBinding.inflate(inflater).also { _binding = it; initUI() }.root
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -75,7 +83,13 @@ class MainFragment : Fragment() {
 
     private fun populateUI(weather: WeatherModel?) = with(binding) {
         snackBar?.dismiss()
-        
+
+        timeTextView.setOnClickListener {
+            findNavController().navigate(
+                R.id.leakTestFragment
+            )
+        }
+
         timeTextView.setTextOrGone(
             weather?.formattedDate?.let { getString(R.string.time_, it) }
         )

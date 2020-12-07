@@ -19,7 +19,7 @@ class LeakTestFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_leak, container, false)
+        return inflater.inflate(R.layout.fragment_leak_test, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -2,7 +2,7 @@
     <string name="app_name">iiWeather</string>
     <!-- Strings used for fragments for navigation -->
     <string name="main_fragment_label">main Fragment</string>
-    <string name="leak_fragment_label">Leak Fragment</string>
+    <string name="leak_fragment_label">Used for testing leaks Fragment</string>
     <string name="previous">Previous</string>
 
     <string name="time_">Time: %1$s</string>

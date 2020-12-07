@@ -13,13 +13,13 @@
 
         <action
             android:id="@+id/action_mainFragment_to_LeakFragment"
-            app:destination="@id/LeakFragment" />
+            app:destination="@id/leakTestFragment" />
     </fragment>
     <fragment
-        android:id="@+id/LeakFragment"
+        android:id="@+id/leakTestFragment"
         android:name="com.imn.iiweather.ui.debug.LeakTestFragment"
         android:label="@string/leak_fragment_label"
-        tools:layout="@layout/fragment_leak">
+        tools:layout="@layout/fragment_leak_test">
 
         <action
             android:id="@+id/action_LeakFragment_to_mainFragment"
