@@ -20,5 +20,6 @@
     <string name="retry">Retry</string>
     <string name="failed_to_get_location">Failed to get location!</string>
     <string name="failed_to_get_weather">Failed to get weather!</string>
+    <string name="failed_to_get_weather_expired_data">Failed to get new weather data, the shown data may be expired!</string>
     <string name="unknown_error">Unexpected error happened!</string>
 </resources>

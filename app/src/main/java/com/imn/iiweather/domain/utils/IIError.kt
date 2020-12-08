@@ -7,6 +7,7 @@ import java.net.UnknownHostException
 
 sealed class IIError(cause: Throwable) : Throwable(cause) {
     class Network(cause: Throwable) : IIError(cause)
+    class ExpiredData(cause: Throwable) : IIError(cause)
     class Location(cause: Throwable) : IIError(cause)
     class Unknown(cause: Throwable) : IIError(cause) {
         init {
@@ -39,5 +40,6 @@ fun Throwable.asIIError(): IIError =
 fun IIError.humanReadable() = when (this) {
     is IIError.Location -> R.string.failed_to_get_location
     is IIError.Network -> R.string.failed_to_get_weather
+    is IIError.ExpiredData -> R.string.failed_to_get_weather_expired_data
     else -> R.string.unknown_error
 }

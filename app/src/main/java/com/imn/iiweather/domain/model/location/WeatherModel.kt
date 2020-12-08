@@ -12,5 +12,5 @@ data class WeatherModel(
     val longitude: Double?,
     val latitude: Double?,
 ) {
-    val formattedDate = time?.toFormattedDate()
+    val timeFormatted = time?.toFormattedDate()
 }

@@ -16,17 +16,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flow_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
         app:flow_verticalGap="@dimen/spacing_normal"
         android:layout_marginHorizontal="@dimen/spacing_double"
         app:flow_verticalStyle="packed"
-        app:constraint_referenced_ids="latitude_text_view,longitude_text_view,time_text_view,summary_text_view,temperature_text_view,humidityTextView,pressure_text_view,windSpeed_text_view"
+        android:visibility="gone"
+        app:constraint_referenced_ids="latitude_text_view,longitude_text_view,time_text_view,summary_text_view,temperature_text_view,humidity_text_view,pressure_text_view,windSpeed_text_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/latitude_text_view"
@@ -64,7 +67,7 @@
         tools:text="temperature" />
 
     <TextView
-        android:id="@+id/humidityTextView"
+        android:id="@+id/humidity_text_view"
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

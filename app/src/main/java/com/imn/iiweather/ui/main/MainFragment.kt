@@ -63,7 +63,9 @@ class MainFragment : Fragment() {
                 populateUI(value)
             }
             is IIError -> {
-                populateUI(null)
+                if (value !is IIError.ExpiredData) {
+                    populateUI(null)
+                }
                 snackBar = coordinatorLayout.showSnackbar(value.humanReadable(),
                     Snackbar.LENGTH_INDEFINITE,
                     R.string.retry) {
@@ -84,12 +86,14 @@ class MainFragment : Fragment() {
     private fun populateUI(weather: WeatherModel?) = with(binding) {
         snackBar?.dismiss()
 
+        flowContainer.isVisible = (weather != null)
+
         timeTextView.setOnClickListener {
             findNavController().navigate(R.id.leakTestFragment)
         }
 
         timeTextView.setTextOrGone(
-            weather?.formattedDate?.let { getString(R.string.time_, it) }
+            weather?.timeFormatted?.let { getString(R.string.time_, it) }
         )
         summaryTextView.setTextOrGone(
             weather?.summary?.let { getString(R.string.summary_, it) }

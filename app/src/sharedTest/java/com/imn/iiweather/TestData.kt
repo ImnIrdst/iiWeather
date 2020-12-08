@@ -20,9 +20,9 @@ val weather = WeatherModel(
     temperature = 49.05,
     humidity = 0.69,
     pressure = 1022.7,
-    windSpeed = null,
     longitude = -122.0593,
     latitude = 37.3806,
+    windSpeed = null,
 )
 
 val weatherEntity = WeatherEntity(
@@ -44,5 +44,6 @@ val weatherResponse = WeatherResponse(weatherJson)
 
 val unknownHostException = UnknownHostException()
 val iiNetworkError = IIError.Network(unknownHostException)
+val iiExpiredError = IIError.ExpiredData(unknownHostException)
 
 const val LATCH_AWAIT_TIMEOUT = 2L

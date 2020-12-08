@@ -2,6 +2,8 @@ package com.imn.iiweather.data.repository.weather
 
 import com.imn.iiweather.domain.model.location.LocationModel
 import com.imn.iiweather.domain.repository.WeatherRepository
+import com.imn.iiweather.domain.utils.IIError
+import com.imn.iiweather.domain.utils.asIIError
 import com.imn.iiweather.domain.utils.withStates
 import com.imn.iiweather.utils.EspressoIdlingResource
 import kotlinx.coroutines.flow.filterNotNull
@@ -22,9 +24,19 @@ class DefaultWeatherRepository(
 
                 if (localEntity == null || localEntity.isExpired()) {
                     EspressoIdlingResource.increment()
-                    remote.getCurrentWeather(locationModel).toWeatherEntity()
-                        ?.let { if (localEntity != null) it.copy(id = localEntity.id) else it }
-                        ?.let { local.insertCurrentWeather(it) }
+                    try {
+                        remote.getCurrentWeather(locationModel).toWeatherEntity()
+                            ?.let { if (localEntity != null) it.copy(id = localEntity.id) else it }
+                            ?.let { local.insertCurrentWeather(it) }
+                    } catch (e: Throwable) {
+                        EspressoIdlingResource.decrement()
+                        if (localEntity != null) {
+                            throw IIError.ExpiredData(e)
+                        } else {
+                            throw e.asIIError()
+                        }
+                    }
+
                 }
             }
             .filterNotNull()
