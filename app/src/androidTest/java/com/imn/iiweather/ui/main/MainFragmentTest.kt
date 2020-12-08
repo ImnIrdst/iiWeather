@@ -72,9 +72,6 @@ class MainFragmentTest {
         onView(withId(R.id.latitude_text_view)).check(matches(isDisplayed()))
         onView(withId(R.id.longitude_text_view)).check(matches(isDisplayed()))
 
-        // TODO Fix offline first bug
-        // TODO add Icon
-
         onView(withId(R.id.time_text_view))
             .check(matches(withText(context.getString(R.string.time_, weather.timeFormatted))))
 
