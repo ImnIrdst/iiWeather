@@ -29,8 +29,8 @@ class MainFragmentTest {
 
     private lateinit var fakeLocationLiveData: FakeLocationLiveData
 
-    val context: Context = ApplicationProvider.getApplicationContext()
-    val fakeDataBase = FakeDataBase.provideFakeDataBase(context)
+    private val context: Context = ApplicationProvider.getApplicationContext()
+    private val fakeDataBase = FakeDataBase.provideFakeDataBase(context)
 
     @Before
     fun before() {
@@ -57,41 +57,6 @@ class MainFragmentTest {
         fakeLocationLiveData.loadLocation()
 
         checkIfWeatherDataIsShown()
-    }
-
-    private fun checkIfWeatherDataIsShown() {
-        onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())))
-
-        onView(withId(R.id.flow_container)).check(matches(isDisplayed()))
-        onView(withId(R.id.time_text_view)).check(matches(isDisplayed()))
-        onView(withId(R.id.summary_text_view)).check(matches(isDisplayed()))
-        onView(withId(R.id.temperature_text_view)).check(matches(isDisplayed()))
-        onView(withId(R.id.humidity_text_view)).check(matches(isDisplayed()))
-        onView(withId(R.id.pressure_text_view)).check(matches(isDisplayed()))
-        onView(withId(R.id.windSpeed_text_view)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.latitude_text_view)).check(matches(isDisplayed()))
-        onView(withId(R.id.longitude_text_view)).check(matches(isDisplayed()))
-
-        onView(withId(R.id.time_text_view))
-            .check(matches(withText(context.getString(R.string.time_, weather.timeFormatted))))
-
-        onView(withId(R.id.summary_text_view))
-            .check(matches(withText(context.getString(R.string.summary_, weather.summary))))
-
-        onView(withId(R.id.temperature_text_view))
-            .check(matches(withText(context.getString(R.string.temperature_, weather.temperature))))
-
-        onView(withId(R.id.humidity_text_view))
-            .check(matches(withText(context.getString(R.string.humidity_, weather.humidity))))
-
-        onView(withId(R.id.pressure_text_view))
-            .check(matches(withText(context.getString(R.string.pressure_, weather.pressure))))
-
-        onView(withId(R.id.longitude_text_view))
-            .check(matches(withText(context.getString(R.string.longitude_, weather.longitude))))
-
-        onView(withId(R.id.latitude_text_view))
-            .check(matches(withText(context.getString(R.string.latitude_, weather.latitude))))
     }
 
     @Test
@@ -127,5 +92,32 @@ class MainFragmentTest {
 
         onView(withId(com.google.android.material.R.id.snackbar_text))
             .check(matches(withText(iiExpiredError.humanReadable())))
+    }
+
+    private fun checkIfWeatherDataIsShown() {
+        onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())))
+
+        onView(withId(R.id.flow_container)).check(matches(isDisplayed()))
+        onView(withId(R.id.time_text_view)).check(matches(isDisplayed()))
+        onView(withId(R.id.summary_text_view)).check(matches(isDisplayed()))
+        onView(withId(R.id.temperature_text_view)).check(matches(isDisplayed()))
+        onView(withId(R.id.humidity_text_view)).check(matches(isDisplayed()))
+        onView(withId(R.id.pressure_text_view)).check(matches(isDisplayed()))
+        onView(withId(R.id.windSpeed_text_view)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.latitude_text_view)).check(matches(isDisplayed()))
+        onView(withId(R.id.longitude_text_view)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.time_text_view))
+            .check(matches(withText(weather.getTimeFormatted(context))))
+        onView(withId(R.id.summary_text_view))
+            .check(matches(withText(weather.getSummaryFormatted(context))))
+        onView(withId(R.id.temperature_text_view))
+            .check(matches(withText(weather.getTemperatureFormatted(context))))
+        onView(withId(R.id.humidity_text_view))
+            .check(matches(withText(weather.getHumidityFormatted(context))))
+        onView(withId(R.id.pressure_text_view))
+            .check(matches(withText(weather.getPressureFormatted(context))))
+        onView(withId(R.id.longitude_text_view))
+            .check(matches(withText(weather.getLongitudeFormatted(context))))
     }
 }

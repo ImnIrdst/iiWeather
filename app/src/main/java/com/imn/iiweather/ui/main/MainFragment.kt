@@ -84,38 +84,27 @@ class MainFragment : Fragment() {
     }
 
     private fun populateUI(weather: WeatherModel?) = with(binding) {
+
+        if (weather == null) {
+            flowContainer.isVisible = false
+            return@with
+        }
+
         snackBar?.dismiss()
+        flowContainer.isVisible = true
+        timeTextView.setTextOrGone(weather.getTimeFormatted(requireContext()))
+        summaryTextView.setTextOrGone(weather.getSummaryFormatted(requireContext()))
+        temperatureTextView.setTextOrGone(weather.getTemperatureFormatted(requireContext()))
+        humidityTextView.setTextOrGone(weather.getHumidityFormatted(requireContext()))
+        pressureTextView.setTextOrGone(weather.getPressureFormatted(requireContext()))
+        windSpeedTextView.setTextOrGone(weather.getWindSpeedFormatted(requireContext()))
+        longitudeTextView.setTextOrGone(weather.getLongitudeFormatted(requireContext()))
+        latitudeTextView.setTextOrGone(weather.getLatitudeFormatted(requireContext()))
 
-        flowContainer.isVisible = (weather != null)
-
-        timeTextView.setOnClickListener {
+        timeTextView.setOnClickListener { // for debug
             findNavController().navigate(R.id.leakTestFragment)
         }
 
-        timeTextView.setTextOrGone(
-            weather?.timeFormatted?.let { getString(R.string.time_, it) }
-        )
-        summaryTextView.setTextOrGone(
-            weather?.summary?.let { getString(R.string.summary_, it) }
-        )
-        temperatureTextView.setTextOrGone(
-            weather?.temperature?.let { getString(R.string.temperature_, it) }
-        )
-        humidityTextView.setTextOrGone(
-            weather?.humidity?.let { getString(R.string.humidity_, it) }
-        )
-        pressureTextView.setTextOrGone(
-            weather?.pressure?.let { getString(R.string.pressure_, it) }
-        )
-        windSpeedTextView.setTextOrGone(
-            weather?.windSpeed?.let { getString(R.string.windSpeed_, it) }
-        )
-        latitudeTextView.setTextOrGone(
-            weather?.latitude?.let { getString(R.string.latitude_, it) }
-        )
-        longitudeTextView.setTextOrGone(
-            weather?.longitude?.let { getString(R.string.longitude_, it) }
-        )
     }
 
     private fun listenOnLocationAndWeatherUpdates() {
